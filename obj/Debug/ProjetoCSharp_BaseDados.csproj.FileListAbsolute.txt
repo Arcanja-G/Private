@@ -41,3 +41,4 @@ C:\C#\ProjetoCSharp_BaseDados\ProjetoCSharp_BaseDados\obj\Debug\ProjetoCSharp_Ba
 C:\C#\ProjetoCSharp_BaseDados\ProjetoCSharp_BaseDados\obj\Debug\ProjetoC.542F3052.Up2Date
 C:\C#\ProjetoCSharp_BaseDados\ProjetoCSharp_BaseDados\obj\Debug\ProjetoCSharp_BaseDados.exe
 C:\C#\ProjetoCSharp_BaseDados\ProjetoCSharp_BaseDados\obj\Debug\ProjetoCSharp_BaseDados.pdb
+C:\C#\ProjetoCSharp_BaseDados\ProjetoCSharp_BaseDados\obj\Debug\ProjetoCSharp_BaseDados.Frm_Menu.resources

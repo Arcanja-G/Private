@@ -14,7 +14,7 @@ namespace ProjetoCSharp_BaseDados
 {
     public partial class Frm_login : Form
     {
-        MySqlConnection con;
+        MySqlConnection con; //
         MySqlCommand cmd;
         MySqlDataReader dr;
 
@@ -28,36 +28,56 @@ namespace ProjetoCSharp_BaseDados
 
         private void btn_login_Click(object sender, EventArgs e)
         {
-
             try
             {
-
                 string user = txt_utilizador.Text;
                 string pwd = txt_senha.Text;
 
-                string query = "Select * from login where lg_nome= @user and lg_pass = @pass";
+                //string query = "Select * from login where lg_nome= @user and lg_pass = @pass";
+                string query = "SELECT * FROM login WHERE lg_nome = '" + user + "' AND lg_pass = '" + pwd + "'";
 
                 using (MySqlConnection con = new MySqlConnection(ConfigurationManager.ConnectionStrings["minhaConnectionApp"].ConnectionString))
                 {
                     using (MySqlCommand cmd = new MySqlCommand(query, con))
                     {
-                        cmd.Parameters.AddWithValue("@user", user);
-                        cmd.Parameters.AddWithValue("@pass", pwd);
+                        /*cmd.Parameters.AddWithValue("@user", user);
+                        cmd.Parameters.AddWithValue("@pass", pwd);*/
 
                         con.Open();
 
                         using (MySqlDataReader dr = cmd.ExecuteReader())
                         {
+
                             if (dr.Read())
                             {
-                                MessageBox.Show("Login efetuado com sucesso!\n" + "Bom vindo " +dr[1],
+                                // Login correto
+                                MessageBox.Show("Login efetuado com sucesso!\n" + "Bem vindo " + dr[1],
                                     "LOGIN", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                                //GerirForms.TrocarForms(this, new Frm_crud());
+                                Frm_Menu menu = new Frm_Menu(user);
+                                menu.Show();
+                                this.Hide();
+
+                                // Garante que a mensagem de erro some quando login é correto
+                                lbl_erro.Visible = false;
                             }
                             else
                             {
-                                MessageBox.Show("Utilizador ou senha inválidos!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                // Se usuário + senha não existir no banco
+                                lbl_erro.Text = "Usuário ou senha inválidos!";
+                                lbl_erro.Visible = true;        // deixa visível
+
+                                // Limpa os campos e coloca foco no usuário
+                                txt_utilizador.Clear();
+                                txt_senha.Clear();
+                                txt_utilizador.Focus();
+                            }
+                            if (!dr.HasRows) // aqui entra a verificação que você quer
+                            {
+                                lbl_erro.Text = "Utilizador ou senha inválidos!";
+                                lbl_erro.Visible = true;
+                                txt_utilizador.Focus();
+                                return;
                             }
                         }
                     }
@@ -67,13 +87,36 @@ namespace ProjetoCSharp_BaseDados
             catch (Exception ex)
             {
                 MessageBox.Show("Ocorreu um erro: " + ex.Message, "ERRO", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                //MessageBox.Show("Ocorreu um erro! Tente mais tarde!", "ERRO", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            /*catch(MySqlException ex) when (exNumber==0)  //nao foi possivel ligar ao servidor
-            {
-                MessageBox.Show("Não foi possivel ligar ao servidor");
-            }*/
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void chk_mostrarSenha_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chk_mostrarSenha.Checked)
+            {
+                txt_senha.UseSystemPasswordChar = false;
+            } else
+            {
+                txt_senha.UseSystemPasswordChar = true;
+            }
+        }
+
+        private void txt_utilizador_TextChanged_1(object sender, EventArgs e)
+        {
+            lbl_erro.Visible = false;
+        }
+
+       /* private void groupBox1_Enter(object sender, EventArgs e)
+        {
+            groupBox1.Text = "";
+        }*/
+
+   
     }
 }
 
