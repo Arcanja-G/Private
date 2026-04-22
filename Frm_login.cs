@@ -28,6 +28,7 @@ namespace ProjetoCSharp_BaseDados
 
         private void btn_login_Click(object sender, EventArgs e)
         {
+          
             try
             {
                 string user = txt_utilizador.Text;
@@ -35,6 +36,11 @@ namespace ProjetoCSharp_BaseDados
 
                 //string query = "Select * from login where lg_nome= @user and lg_pass = @pass";
                 string query = "SELECT * FROM login WHERE lg_nome = '" + user + "' AND lg_pass = '" + pwd + "'";
+
+                if (user == "admin" && pwd == "123456")
+                {
+                    MessageBox.Show("Login efetuado!");
+                }
 
                 using (MySqlConnection con = new MySqlConnection(ConfigurationManager.ConnectionStrings["minhaConnectionApp"].ConnectionString))
                 {
